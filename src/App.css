@@ -44,3 +44,42 @@ body {
   filter: brightness(1.15) contrast(1.1);
   box-shadow: 0 35px 55px rgba(0, 0, 0, 0.6);
 }
+/*responsive layouts*/
+/*laptop*/
+@media (max-width:1200px){
+  .gallery{
+    grid-template-columns: repeat(4,1fr);
+  }
+}
+/*tablet*/ 
+@media(max-width:992px){
+  .gallery{
+    grid-template-columns: repeat(3,1fr);
+    padding: 20px;
+  }
+} 
+/*small tablet*/
+@media(max-width:768px){
+  .gallery {
+    grid-template-columns: repeat(2,1fr);
+    padding: 20px;
+  }
+  .magic-container {
+   width: 180px;
+   height: 220px;
+  }
+}
+/*mobile*/
+@media(max-width: 480px){
+  .gallery {
+    grid-template-columns: 1fr;
+    padding: 15px;
+  }
+  .magic-container{
+    width: 85%;
+    height: 240px;
+  }
+  .magic-container.active.image-stage {
+    transform: :scale(1.08) translateY(-10px);
+  }
+}
