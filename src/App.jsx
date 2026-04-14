@@ -16,17 +16,16 @@ const teams = [
 
 const HoverCard = ({ team }) => {
   const images = [
-    `/images/${team}.png`, // Default Logo
-    `/images/${team}char.png`, // Character
-    `/images/${team}ani.png`, // Animal
+    `/images/${team}.png`,
+    `/images/${team}char.png`,
+    `/images/${team}ani.png`,
   ];
 
   const [currentImg, setCurrentImg] = useState(images[0]);
   const [hoverIndex, setHoverIndex] = useState(1);
-  const [active, setActive] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -38,10 +37,9 @@ const HoverCard = ({ team }) => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Desktop Hover
   const handleMouseEnter = () => {
     if (!isMobile) {
-      setActive(true);
+      setHovered(true);
       setCurrentImg(images[hoverIndex]);
 
       setHoverIndex((prev) => (prev + 1 >= images.length ? 1 : prev + 1));
@@ -50,15 +48,14 @@ const HoverCard = ({ team }) => {
 
   const handleMouseLeave = () => {
     if (!isMobile) {
-      setActive(false);
+      setHovered(false);
       setCurrentImg(images[0]);
     }
   };
 
-  // Mobile Tap
   const handleClick = () => {
     if (isMobile) {
-      setActive(true);
+      setHovered(true);
       setCurrentImg(images[hoverIndex]);
 
       setHoverIndex((prev) => (prev + 1 >= images.length ? 1 : prev + 1));
@@ -67,7 +64,7 @@ const HoverCard = ({ team }) => {
 
   return (
     <div
-      className={`magic-container ${active ? "active" : ""}`}
+      className={`magic-container ${hovered ? "pop-up" : ""}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
