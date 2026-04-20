@@ -1,89 +1,55 @@
-import React, { useState, useEffect } from "react";
-import "./App.css";
+import TitleHeader from "./components/TitleHeader";
+import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const teams = [
-  "csk",
-  "dc",
-  "gt",
-  "kkr",
-  "lsg",
-  "mi",
-  "rcb",
-  "srh",
-  "rr",
-  "pbks",
-];
-
-const HoverCard = ({ team }) => {
-  const images = [
-    `/images/${team}.png`,
-    `/images/${team}char.png`,
-    `/images/${team}ani.png`,
-  ];
-
-  const [currentImg, setCurrentImg] = useState(images[0]);
-  const [hoverIndex, setHoverIndex] = useState(1);
-  const [hovered, setHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+const App = () => {
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    window.addEventListener("scroll", handleScroll);
 
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleMouseEnter = () => {
-    if (!isMobile) {
-      setHovered(true);
-      setCurrentImg(images[hoverIndex]);
-
-      setHoverIndex((prev) => (prev + 1 >= images.length ? 1 : prev + 1));
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isMobile) {
-      setHovered(false);
-      setCurrentImg(images[0]);
-    }
-  };
-
-  const handleClick = () => {
-    if (isMobile) {
-      setHovered(true);
-      setCurrentImg(images[hoverIndex]);
-
-      setHoverIndex((prev) => (prev + 1 >= images.length ? 1 : prev + 1));
-    }
-  };
+  const fade = Math.max(1 - scrollY / 500, 0.2);
+  const scale = Math.max(1 - scrollY / 2000, 0.85);
 
   return (
-    <div
-      className={`magic-container ${hovered ? "pop-up" : ""}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    >
-      <div className="image-stage">
-        <img src={currentImg} className="hover-img" alt={team} />
+    <div className="app">
+      {/* Header Overlay */}
+      <div
+        className="header-overlay"
+        style={{
+          opacity: fade,
+          transform: `scale(${scale})`,
+          pointerEvents: scrollY > 400 ? "none" : "auto",
+        }}
+      >
+        <TitleHeader />
+
+        <div
+          className="scroll-message"
+          onClick={() =>
+            window.scrollTo({
+              top: window.innerHeight,
+              behavior: "smooth",
+            })
+          }
+        >
+          Scroll ↓
+        </div>
+      </div>
+
+      {/* Page Content */}
+      <div className="content">
+        <Outlet />
       </div>
     </div>
   );
 };
 
-const HoverGallery = () => {
-  return (
-    <div className="gallery">
-      {teams.map((team, index) => (
-        <HoverCard key={index} team={team} />
-      ))}
-    </div>
-  );
-};
-
-export default HoverGallery;
+export default App;

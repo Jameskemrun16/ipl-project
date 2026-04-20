@@ -1,7 +1,225 @@
+/* ===============================
+   GLOBAL
+================================= */
+
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Cinzel", "Trajan Pro", serif;
+  background: #020c2b;
+  color: white;
 }
+
+.app {
+  width: 100%;
+  min-height: 200vh;
+  background: #020c2b;
+}
+
+/* ===============================
+   TITLE OVERLAY
+================================= */
+
+.header-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 100;
+  transition: all 0.4s ease;
+}
+
+.title-global {
+  text-align: center;
+}
+
+.title-global img {
+  max-width: 1500px;
+  width: 90%;
+}
+
+.scroll-message {
+  position: absolute;
+  bottom: 40px;
+  font-size: 18px;
+  opacity: 0.7;
+  cursor: pointer;
+  animation: float 2s infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.content {
+  margin-top: 100vh;
+  padding: 40px;
+}
+
+/* ===============================
+   NAME ENTRY PAGE (MYTHIC)
+================================= */
+
+.name-entry-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #081321, #02060f);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.name-entry-container {
+  width: 520px;
+  background: #050d1c;
+  border-radius: 22px;
+  padding: 40px;
+
+  border: 1px solid rgba(255, 215, 120, 0.25);
+
+  box-shadow:
+    0 0 40px rgba(255, 215, 120, 0.12),
+    inset 0 0 30px rgba(255, 215, 120, 0.04);
+
+  text-align: center;
+}
+
+/* Mythic Title */
+
+.mythic-title {
+  font-size: 30px;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+  color: #f5d37a;
+
+  text-shadow: 0 0 12px rgba(255, 215, 120, 0.35);
+
+  font-weight: 600;
+}
+
+.mythic-subtitle {
+  margin-bottom: 30px;
+  opacity: 0.7;
+  letter-spacing: 2px;
+}
+
+/* Input Section */
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-section input {
+  padding: 14px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255, 215, 120, 0.2);
+
+  background: #020814;
+  color: white;
+
+  font-size: 15px;
+
+  transition: 0.4s ease;
+}
+
+.input-section input:focus {
+  outline: none;
+
+  border: 1px solid rgba(255, 215, 120, 0.6);
+
+  box-shadow: 0 0 15px rgba(255, 215, 120, 0.2);
+}
+
+/* Mythic Buttons */
+
+.mythic-btn {
+  padding: 14px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255, 215, 120, 0.4);
+
+  background: linear-gradient(145deg, #1a1204, #090601);
+
+  color: #f5d37a;
+  letter-spacing: 2px;
+
+  cursor: pointer;
+
+  transition: 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+
+  box-shadow: 0 0 10px rgba(255, 215, 120, 0.15);
+}
+
+.mythic-btn:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 0 20px rgba(255, 215, 120, 0.35);
+}
+
+.mythic-btn:active {
+  transform: scale(0.97);
+}
+
+/* Player List */
+
+.player-list {
+  margin-top: 25px;
+  margin-bottom: 30px;
+}
+
+/* Player Cards */
+
+.player-item {
+  background: #020814;
+
+  border-radius: 10px;
+
+  padding: 12px;
+
+  margin-bottom: 8px;
+
+  border: 1px solid rgba(255, 215, 120, 0.15);
+
+  letter-spacing: 1px;
+
+  opacity: 0;
+  transform: translateY(20px);
+
+  animation: playerAppear 0.6s ease forwards;
+}
+
+/* Stagger Animation */
+
+@keyframes playerAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.start-btn {
+  width: 100%;
+}
+
+/* ===============================
+   TEAM SELECTION GRID
+================================= */
 
 .gallery {
   display: grid;
@@ -15,13 +233,30 @@ body {
 
 .magic-container {
   width: 220px;
-  height: 260px;
-  background: rgba(255, 255, 255, 0.08);
+  background: #0b1c3a;
   border-radius: 2rem;
-  padding: 6px;
-  box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
+  padding: 10px;
   cursor: pointer;
-  transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+
+  transition: 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hover-container {
+  width: 100%;
+  height: 180px;
+  cursor: pointer;
+}
+
+.hover-container.active .image-stage {
+  transform: scale(1.12) translateY(-18px) rotateZ(1deg);
+  filter: brightness(1.1) contrast(1.05);
+  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.6);
 }
 
 .image-stage {
@@ -30,57 +265,89 @@ body {
   border-radius: 1.8rem;
   overflow: hidden;
   background: #f4ede4;
-  transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  transition: 0.9s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .hover-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: all 0.8s ease;
+  transition: 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
 }
 
-.magic-container.pop-up .image-stage {
-  transform: scale(1.15) translateY(-18px) rotateZ(1.5deg);
-  filter: brightness(1.15) contrast(1.1);
-  box-shadow: 0 35px 55px rgba(0, 0, 0, 0.6);
+.fingerprint-container {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  opacity: 0.7;
+  transition: 0.4s ease;
+  cursor: pointer;
 }
-/*responsive layouts*/
-/*laptop*/
-@media (max-width:1200px){
-  .gallery{
-    grid-template-columns: repeat(4,1fr);
-  }
+
+.fingerprint-container img {
+  height: 46px;
 }
-/*tablet*/ 
-@media(max-width:992px){
-  .gallery{
-    grid-template-columns: repeat(3,1fr);
-    padding: 20px;
-  }
-} 
-/*small tablet*/
-@media(max-width:768px){
-  .gallery {
-    grid-template-columns: repeat(2,1fr);
-    padding: 20px;
-  }
-  .magic-container {
-   width: 180px;
-   height: 220px;
-  }
+
+.fingerprint-container:hover {
+  opacity: 1;
+  transform: scale(1.08);
 }
-/*mobile*/
-@media(max-width: 480px){
-  .gallery {
-    grid-template-columns: 1fr;
-    padding: 15px;
-  }
-  .magic-container{
-    width: 85%;
-    height: 240px;
-  }
-  .magic-container.active.image-stage {
-    transform: :scale(1.08) translateY(-10px);
-  }
+
+.team-name {
+  text-align: center;
+  margin-top: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-size: 14px;
+}
+
+.magic-container.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  filter: grayscale(40%);
+}
+
+/* ===============================
+   TEAM PAGE
+================================= */
+
+.team-page {
+  padding: 30px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e2b3c, #0f1a24);
+}
+
+.team-header {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.back-btn {
+  position: absolute;
+  left: 0;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.player-card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 15px;
+  border-radius: 10px;
 }
