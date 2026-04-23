@@ -3,7 +3,7 @@ import React from "react";
 const TitleHeader = () => {
   return (
     <div className="title-global">
-      <img src="/images/title1.png" alt="title" />
+      <img src="/images_webp/title1.webp" alt="title" />
     </div>
   );
 };

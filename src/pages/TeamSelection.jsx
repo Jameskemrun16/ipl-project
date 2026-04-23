@@ -15,7 +15,7 @@ const teams = [
   "pbks",
 ];
 
-const fingerprint = "/images/fingerprint1.png";
+const fingerprint = "/images_webp/fingerprint1.webp";
 
 const TeamSelection = () => {
   const navigate = useNavigate();
@@ -33,10 +33,44 @@ const TeamSelection = () => {
   const [hoverCycle, setHoverCycle] = useState({});
   const [isTouch, setIsTouch] = useState(false);
 
+  // 🔥 NEW: preload state
+  const [loaded, setLoaded] = useState(false);
+
   const containerRef = useRef([]);
 
-  /* Detect Touch */
+  /* ===============================
+     PRELOAD ALL IMAGES (NEW LOGIC)
+  =============================== */
+  useEffect(() => {
+    const allImages = teams.flatMap((team) => [
+      `/images_webp/${team}.webp`,
+      `/images_webp/${team}char.webp`,
+      `/images_webp/${team}ani.webp`,
+    ]);
 
+    let count = 0;
+
+    allImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+
+      img.onload = () => {
+        count++;
+        if (count === allImages.length) {
+          setLoaded(true);
+        }
+      };
+
+      img.onerror = () => {
+        count++;
+        if (count === allImages.length) {
+          setLoaded(true);
+        }
+      };
+    });
+  }, []);
+
+  /* Detect Touch */
   useEffect(() => {
     const detectTouch = () => {
       const touchDevice =
@@ -52,7 +86,6 @@ const TeamSelection = () => {
   }, []);
 
   /* Click Outside Reset */
-
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (containerRef.current.every((ref) => ref && !ref.contains(e.target))) {
@@ -62,12 +95,10 @@ const TeamSelection = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   /* Team Select */
-
   const handleTeamSelect = (team) => {
     const currentPlayer = players[currentPlayerIndex];
 
@@ -79,7 +110,6 @@ const TeamSelection = () => {
     });
 
     setCurrentPlayerIndex(currentPlayerIndex + 1);
-
     navigate(`/team/${team}`);
   };
 
@@ -88,7 +118,6 @@ const TeamSelection = () => {
   };
 
   /* Hover Logic */
-
   const handleMouseEnter = (index) => {
     if (isTouch) return;
 
@@ -96,12 +125,10 @@ const TeamSelection = () => {
 
     setImageState((prev) => {
       const cycle = hoverCycle[index] ?? 0;
-
-      if (cycle === 0) {
-        return { ...prev, [index]: 1 };
-      }
-
-      return { ...prev, [index]: 2 };
+      return {
+        ...prev,
+        [index]: cycle === 0 ? 1 : 2,
+      };
     });
   };
 
@@ -122,7 +149,6 @@ const TeamSelection = () => {
   };
 
   /* Mobile Click */
-
   const handleClick = (index) => {
     if (!isTouch) return;
 
@@ -130,13 +156,17 @@ const TeamSelection = () => {
 
     setImageState((prev) => {
       const current = prev[index] ?? 0;
-
-      // FIX: Proper cycle 0 → 1 → 2 → 0
       const next = (current + 1) % 3;
-
       return { ...prev, [index]: next };
     });
   };
+
+  /* ===============================
+     LOADING SCREEN (BLOCK UI)
+  =============================== */
+  if (!loaded) {
+    return <div className="loading-screen">Loading Mythic Arena...</div>;
+  }
 
   return (
     <>
@@ -149,9 +179,9 @@ const TeamSelection = () => {
       <div className="gallery">
         {teams.map((team, index) => {
           const images = [
-            `/images/${team}.png`,
-            `/images/${team}char.png`,
-            `/images/${team}ani.png`,
+            `/images_webp/${team}.webp`,
+            `/images_webp/${team}char.webp`,
+            `/images_webp/${team}ani.webp`,
           ];
 
           const state = imageState[index] ?? 0;
@@ -164,7 +194,6 @@ const TeamSelection = () => {
               ref={(el) => (containerRef.current[index] = el)}
               className={`magic-container ${disabled ? "disabled" : ""}`}
             >
-              {/* Image Hover Container */}
               <div
                 className={`hover-container ${
                   activeIndex === index ? "active" : ""
@@ -178,10 +207,8 @@ const TeamSelection = () => {
                 </div>
               </div>
 
-              {/* Team Name Separate */}
               <div className="team-name">{team.toUpperCase()}</div>
 
-              {/* Fingerprint Separate */}
               {state === 0 && !disabled && (
                 <div
                   className="fingerprint-container"
