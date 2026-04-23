@@ -131,16 +131,11 @@ const TeamSelection = () => {
     setImageState((prev) => {
       const current = prev[index] ?? 0;
 
-      if (current === 0) return { ...prev, [index]: 1 };
-      if (current === 1) return { ...prev, [index]: 0 };
+      // FIX: Proper cycle 0 → 1 → 2 → 0
+      const next = (current + 1) % 3;
 
-      return { ...prev, [index]: 0 };
+      return { ...prev, [index]: next };
     });
-
-    setHoverCycle((prev) => ({
-      ...prev,
-      [index]: (prev[index] ?? 0) === 0 ? 1 : 0,
-    }));
   };
 
   return (
